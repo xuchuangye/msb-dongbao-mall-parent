@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>msb-dongbao-mall-parent</artifactId>
+        <groupId>com.mashibing</groupId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
+
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>msb-dongbao-service</artifactId>
+
+    <packaging>pom</packaging>
+
+    <modules>
+        <!-- 订单中心模块实现 -->
+        <module>msb-dongbao-oms</module>
+        <!-- 商品中心模块实现 -->
+        <module>msb-dongbao-pms</module>
+        <!-- 用户中心模块实现 -->
+        <module>msb-dongbao-ums</module>
+        <!-- 支付中心模块实现 -->
+        <module>msb-dongbao-pay</module>
+        <!-- 购物车模块实现 -->
+        <module>msb-dongbao-cart</module>
+        <!-- 基础字典模块实现 -->
+        <module>msb-dongbao-dictionary</module>
+        <!-- 优惠中心模块实现 -->
+        <module>msb-dongbao-sms</module>
+        <!-- 内容中心模块实现 -->
+        <module>msb-dongbao-cms</module>
+    </modules>
+</project>
