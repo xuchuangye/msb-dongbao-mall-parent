@@ -13,4 +13,12 @@
     <artifactId>msb-dongbao-common-base</artifactId>
 
     <packaging>jar</packaging>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-boot-starter</artifactId>
+            <version>3.0.5</version>
+        </dependency>
+    </dependencies>
 </project>

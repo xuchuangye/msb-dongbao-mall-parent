@@ -1,6 +1,10 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
+    #北京时间东八区
+    #serverTimezone=GMT%2B8
+    #上海时间
+    #serverTimezone=Asia/Shanghai
     url: jdbc:mysql://192.168.200.131:3306/msb_dongbao_test?characterEncoding=utf-8&serverTimezone=GMT%2B8
     username: root
     password: root
