@@ -1,12 +1,10 @@
 package com.msb.dongbao.portal.web.controller;
 
+import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
 import com.msb.dongbao.ums.api.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * @author xcy
@@ -19,7 +17,7 @@ public class UserMemberController {
 	@Autowired
 	private UmsMemberService umsMemberService;
 
-	@GetMapping("/register")
+	@PostMapping("/register")
 	public String registerUser(@RequestBody UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
 		boolean result = umsMemberService.selectUser(umsMemberRegisterParamDTO);
 		if (result) {
@@ -27,5 +25,10 @@ public class UserMemberController {
 		}
 		umsMemberService.registerUser(umsMemberRegisterParamDTO);
 		return "register";
+	}
+
+	@PostMapping("/login")
+	public String loginUser(@RequestBody UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
+		return umsMemberService.loginUser(umsMemberLoginParamDTO);
 	}
 }

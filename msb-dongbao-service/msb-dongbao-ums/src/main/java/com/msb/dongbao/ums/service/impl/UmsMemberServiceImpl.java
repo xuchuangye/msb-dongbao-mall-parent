@@ -1,6 +1,7 @@
 package com.msb.dongbao.ums.service.impl;
 
 import com.msb.dongbao.ums.api.entity.UmsMember;
+import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
 import com.msb.dongbao.ums.api.service.UmsMemberService;
 import com.msb.dongbao.ums.mapper.UmsMemberMapper;
@@ -55,5 +56,32 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 		List<UmsMember> umsMembers = umsMemberMapper.selectByMap(map);
 		//如果用户不为空，表示用户已经存在，否则用户不存在
 		return !umsMembers.isEmpty();
+	}
+
+	@Override
+	public String loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
+		String username = umsMemberLoginParamDTO.getUsername();
+		Map<String, Object> map = new HashMap<>();
+		map.put("username", username);
+		List<UmsMember> umsMembers = umsMemberMapper.selectByMap(map);
+		if (!umsMembers.isEmpty() && bCryptPasswordEncoder.matches(umsMemberLoginParamDTO.getPassword(), umsMembers.get(0).getPassword())) {
+			return "用户已存在";
+		}
+		//查询数据库中是否存在用户信息
+		if (!umsMembers.isEmpty()) {
+			//用户名不能重复，所以一个用户名对应一个用户信息
+			UmsMember umsMember = umsMembers.get(0);
+			if (umsMember != null) {
+				//获取数据库中用户密码信息
+				String passwordDB = umsMember.getPassword();
+				//校验密码是否正确
+				if (!bCryptPasswordEncoder.matches(umsMemberLoginParamDTO.getPassword(), passwordDB)) {
+					return "用户密码不正确";
+				}
+			}
+		}else {
+			return "用户不存在";
+		}
+		return "token";
 	}
 }
