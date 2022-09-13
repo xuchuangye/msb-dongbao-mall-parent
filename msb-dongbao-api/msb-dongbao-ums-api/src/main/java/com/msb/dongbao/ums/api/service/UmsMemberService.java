@@ -1,8 +1,6 @@
 package com.msb.dongbao.ums.api.service;
 
-import com.baomidou.mybatisplus.extension.service.IService;
-import com.msb.dongbao.ums.api.entity.UmsMember;
-import org.springframework.stereotype.Service;
+import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
 
 /**
  * <p>
@@ -12,8 +10,8 @@ import org.springframework.stereotype.Service;
  * @author xcy
  * @since 2022-09-10
  */
-@Service
 public interface UmsMemberService {
+	public String registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 
-	public String register();
+	public boolean selectUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 }
