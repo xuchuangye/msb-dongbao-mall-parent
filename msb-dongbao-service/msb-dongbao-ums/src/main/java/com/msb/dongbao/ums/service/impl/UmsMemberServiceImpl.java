@@ -1,5 +1,7 @@
 package com.msb.dongbao.ums.service.impl;
 
+import com.msb.dongbao.common.base.enums.StateCodeEnum;
+import com.msb.dongbao.common.base.response.ResponseResult;
 import com.msb.dongbao.ums.api.entity.UmsMember;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
@@ -35,7 +37,13 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
 	@Override
-	public String registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
+	public ResponseResult registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
+		boolean result = selectUser(umsMemberRegisterParamDTO);
+		if (result) {
+			//用户已存在
+			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getCode(),
+					StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getMessage());
+		}
 		//获取密码值
 		String password = umsMemberRegisterParamDTO.getPassword();
 		//计算得到加密值
@@ -45,7 +53,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 		UmsMember umsMember = new UmsMember();
 		BeanUtils.copyProperties(umsMemberRegisterParamDTO, umsMember);
 		umsMemberMapper.insert(umsMember);
-		return "success";
+		return ResponseResult.success();
 	}
 
 	@Override
@@ -59,13 +67,16 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 	}
 
 	@Override
-	public String loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
+	public ResponseResult loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
 		String username = umsMemberLoginParamDTO.getUsername();
 		Map<String, Object> map = new HashMap<>();
 		map.put("username", username);
 		List<UmsMember> umsMembers = umsMemberMapper.selectByMap(map);
+
+		//用户已存在
 		if (!umsMembers.isEmpty() && bCryptPasswordEncoder.matches(umsMemberLoginParamDTO.getPassword(), umsMembers.get(0).getPassword())) {
-			return "用户已存在";
+			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getCode(),
+					StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getMessage());
 		}
 		//查询数据库中是否存在用户信息
 		if (!umsMembers.isEmpty()) {
@@ -76,12 +87,16 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 				String passwordDB = umsMember.getPassword();
 				//校验密码是否正确
 				if (!bCryptPasswordEncoder.matches(umsMemberLoginParamDTO.getPassword(), passwordDB)) {
-					return "用户密码不正确";
+					//用户密码不正确
+					return ResponseResult.fail(StateCodeEnum.UMSMEMBER_PASSWORD_ERROR.getCode(),
+							StateCodeEnum.UMSMEMBER_PASSWORD_ERROR.getMessage());
 				}
 			}
-		}else {
-			return "用户不存在";
+		} else {
+			//用户不存在
+			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_NO_EXISTS.getCode(),
+					StateCodeEnum.UMSMEMBER_NO_EXISTS.getMessage());
 		}
-		return "token";
+		return ResponseResult.success();
 	}
 }

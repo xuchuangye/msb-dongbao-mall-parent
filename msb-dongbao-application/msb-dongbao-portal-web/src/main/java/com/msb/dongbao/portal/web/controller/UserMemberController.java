@@ -1,10 +1,13 @@
 package com.msb.dongbao.portal.web.controller;
 
+import com.msb.dongbao.common.base.response.ResponseResult;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
 import com.msb.dongbao.ums.api.service.UmsMemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 /**
  * @author xcy
@@ -18,17 +21,13 @@ public class UserMemberController {
 	private UmsMemberService umsMemberService;
 
 	@PostMapping("/register")
-	public String registerUser(@RequestBody UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
-		boolean result = umsMemberService.selectUser(umsMemberRegisterParamDTO);
-		if (result) {
-			return "用户已存在";
-		}
-		umsMemberService.registerUser(umsMemberRegisterParamDTO);
-		return "register";
+	public ResponseResult registerUser(@RequestBody @Valid UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
+		//int a = 10 / 0;
+		return umsMemberService.registerUser(umsMemberRegisterParamDTO);
 	}
 
 	@PostMapping("/login")
-	public String loginUser(@RequestBody UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
+	public ResponseResult loginUser(@RequestBody UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
 		return umsMemberService.loginUser(umsMemberLoginParamDTO);
 	}
 }

@@ -1,4 +1,4 @@
-package msb.dongbao.common.base.entity;
+package com.msb.dongbao.common.base.entity;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;

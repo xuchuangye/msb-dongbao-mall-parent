@@ -1,5 +1,6 @@
 package com.msb.dongbao.ums.api.service;
 
+import com.msb.dongbao.common.base.response.ResponseResult;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
 
@@ -12,9 +13,9 @@ import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
  * @since 2022-09-10
  */
 public interface UmsMemberService {
-	public String registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
+	public ResponseResult registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 
-	public String loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO);
+	public ResponseResult loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO);
 
 	public boolean selectUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 

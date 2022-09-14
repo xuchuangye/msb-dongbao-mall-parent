@@ -93,6 +93,37 @@
             <artifactId>msb-dongbao-ums-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+
+        <dependency>
+            <groupId>com.mashibing</groupId>
+            <artifactId>msb-dongbao-common</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.mashibing</groupId>
+            <artifactId>msb-dongbao-common-base</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
+
+    <!--
+        默认的情况下，xml、properties、yaml文件资源都在resources目录下
+        项目打包的时候，会打包resources目录下的资源
+    -->
+    <!-- 如果项目中的资源放在java目录下的时候，需要指定打包的资源，除了resources目录下，还有java目录下-->
+    <!--<build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+            </resource>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+        </resources>
+    </build>-->
 
 </project>
