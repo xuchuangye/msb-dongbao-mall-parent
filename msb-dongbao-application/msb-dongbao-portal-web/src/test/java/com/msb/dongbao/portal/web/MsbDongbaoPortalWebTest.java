@@ -24,7 +24,7 @@ public class MsbDongbaoPortalWebTest {
 	}
 
 	@Test
-	public void test() {
+	public void testBCryptPasswordEncoder() {
 		//初始值
 		String initialValue = "fhauiwehr231231234";
 		BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();

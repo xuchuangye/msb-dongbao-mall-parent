@@ -47,7 +47,8 @@ public class ResponseResult<T> {
 	 * @param <T>
 	 * @return
 	 */
-	public static <T> ResponseResult success(T data) {
+	@SafeVarargs
+	public static <T> ResponseResult success(T... data) {
 		//@Accessors(chain = ture)
 		/*return new ResponseResult().setCode(StateCodeEnum.SUCCESS.getCode())
 				.setMessage(StateCodeEnum.SUCCESS.getMessage())

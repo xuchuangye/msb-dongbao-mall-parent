@@ -2,6 +2,7 @@ package com.msb.dongbao.ums.service.impl;
 
 import com.msb.dongbao.common.base.enums.StateCodeEnum;
 import com.msb.dongbao.common.base.response.ResponseResult;
+import com.msb.dongbao.common.util.utils.JwtUtils;
 import com.msb.dongbao.ums.api.entity.UmsMember;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,7 +55,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 		UmsMember umsMember = new UmsMember();
 		BeanUtils.copyProperties(umsMemberRegisterParamDTO, umsMember);
 		umsMemberMapper.insert(umsMember);
-		return ResponseResult.success();
+		return ResponseResult.success(umsMember);
 	}
 
 	@Override
@@ -67,6 +69,17 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 	}
 
 	@Override
+	public ResponseResult verify(String token) {
+		String tokenResult = JwtUtils.parseToken(token);
+		//延时token的两种方式
+		//方式一：根据当前的token生成新的token
+		//String newToken = JwtUtils.createToken(tokenResult);
+		//方式二：将当前的token存储到Redis，校验token时再从Redis中获取
+
+		return ResponseResult.success(tokenResult);
+	}
+
+	@Override
 	public ResponseResult loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO) {
 		String username = umsMemberLoginParamDTO.getUsername();
 		Map<String, Object> map = new HashMap<>();
@@ -74,10 +87,11 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 		List<UmsMember> umsMembers = umsMemberMapper.selectByMap(map);
 
 		//用户已存在
-		if (!umsMembers.isEmpty() && bCryptPasswordEncoder.matches(umsMemberLoginParamDTO.getPassword(), umsMembers.get(0).getPassword())) {
+		/*if (!umsMembers.isEmpty() && bCryptPasswordEncoder.matches(umsMemberLoginParamDTO.getPassword(), umsMembers.get(0).getPassword())) {
 			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getCode(),
 					StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getMessage());
-		}
+		}*/
+		String token = null;
 		//查询数据库中是否存在用户信息
 		if (!umsMembers.isEmpty()) {
 			//用户名不能重复，所以一个用户名对应一个用户信息
@@ -90,13 +104,39 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 					//用户密码不正确
 					return ResponseResult.fail(StateCodeEnum.UMSMEMBER_PASSWORD_ERROR.getCode(),
 							StateCodeEnum.UMSMEMBER_PASSWORD_ERROR.getMessage());
+				}else {
+					token = JwtUtils.createToken(umsMember.getUsername());
+					LocalDateTime now = LocalDateTime.now();
+					umsMember.setLoginTime(now);
+					return ResponseResult.success(token, umsMember);
 				}
+				//生成token
 			}
 		} else {
 			//用户不存在
 			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_NO_EXISTS.getCode(),
 					StateCodeEnum.UMSMEMBER_NO_EXISTS.getMessage());
 		}
+
 		return ResponseResult.success();
+	}
+
+	@Override
+	public ResponseResult updateUser(UmsMember umsMember) {
+		Long id = umsMember.getId();
+		Map<String, Object> map = new HashMap<>();
+		map.put("id", id);
+		List<UmsMember> umsMembers = umsMemberMapper.selectByMap(map);
+
+		if (umsMembers.isEmpty()) {
+			//用户不存在
+			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_NO_EXISTS.getCode(),
+					StateCodeEnum.UMSMEMBER_NO_EXISTS.getMessage());
+		}else {
+			//用户id不能重复，所以一个用户id对应一个用户信息
+			UmsMember umsMemberDB = umsMembers.get(0);
+			umsMemberMapper.updateById(umsMemberDB);
+			return ResponseResult.success(umsMemberDB);
+		}
 	}
 }

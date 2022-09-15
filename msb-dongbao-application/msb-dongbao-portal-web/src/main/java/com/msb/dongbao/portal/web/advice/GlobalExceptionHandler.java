@@ -1,7 +1,11 @@
 package com.msb.dongbao.portal.web.advice;
 
+import com.msb.dongbao.common.base.enums.StateCodeEnum;
+import com.msb.dongbao.common.base.exception.TokenException;
 import com.msb.dongbao.common.base.response.ResponseResult;
 import org.springframework.web.bind.annotation.*;
+
+import javax.security.auth.login.LoginException;
 
 /**
  * 全局异常处理类
@@ -19,8 +23,24 @@ import org.springframework.web.bind.annotation.*;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+	/**
+	 * 算术异常的处理
+	 *
+	 * @return 统一异常处理
+	 */
 	@ExceptionHandler(ArithmeticException.class)
-	public ResponseResult responseResult() {
-		return ResponseResult.builder().code(301).message("算术异常处理").build();
+	public ResponseResult arithmeticException() {
+		return ResponseResult.fail(301, "算术异常处理");
+	}
+
+	/**
+	 * 登录异常的处理
+	 *
+	 * @param e 异常
+	 * @return 统一异常处理
+	 */
+	@ExceptionHandler(TokenException.class)
+	public ResponseResult tokenException(Exception e) {
+		return ResponseResult.fail(StateCodeEnum.FAIL.getCode(), e.getMessage());
 	}
 }
