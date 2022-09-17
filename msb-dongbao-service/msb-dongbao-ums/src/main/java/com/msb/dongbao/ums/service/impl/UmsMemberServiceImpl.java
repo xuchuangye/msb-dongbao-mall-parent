@@ -2,6 +2,7 @@ package com.msb.dongbao.ums.service.impl;
 
 import com.msb.dongbao.common.base.enums.StateCodeEnum;
 import com.msb.dongbao.common.base.response.ResponseResult;
+import com.msb.dongbao.common.base.response.ResponseToken;
 import com.msb.dongbao.common.util.utils.JwtUtils;
 import com.msb.dongbao.ums.api.entity.UmsMember;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
@@ -13,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
@@ -69,8 +71,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 	}
 
 	@Override
-	public ResponseResult verify(String token) {
-		String tokenResult = JwtUtils.parseToken(token);
+	public ResponseResult verify(String accessToken) {
+		String tokenResult = JwtUtils.parseToken(accessToken);
 		//延时token的两种方式
 		//方式一：根据当前的token生成新的token
 		//String newToken = JwtUtils.createToken(tokenResult);
@@ -91,7 +93,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getCode(),
 					StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getMessage());
 		}*/
-		String token = null;
+		String accessToken = null;
+		String refreshToken = null;
 		//查询数据库中是否存在用户信息
 		if (!umsMembers.isEmpty()) {
 			//用户名不能重复，所以一个用户名对应一个用户信息
@@ -105,10 +108,15 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 					return ResponseResult.fail(StateCodeEnum.UMSMEMBER_PASSWORD_ERROR.getCode(),
 							StateCodeEnum.UMSMEMBER_PASSWORD_ERROR.getMessage());
 				}else {
-					token = JwtUtils.createToken(umsMember.getUsername());
+					accessToken = JwtUtils.createAccessToken(umsMember.getUsername());
+					refreshToken = JwtUtils.createRefreshToken(umsMember.getUsername());
 					LocalDateTime now = LocalDateTime.now();
 					umsMember.setLoginTime(now);
-					return ResponseResult.success(token, umsMember);
+					//封装token：accessToken和refreshToken
+					ResponseToken responseToken = new ResponseToken();
+					responseToken.setAccessToken(accessToken);
+					responseToken.setRefreshToken(refreshToken);
+					return ResponseResult.success(responseToken, umsMember);
 				}
 				//生成token
 			}
@@ -128,6 +136,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 		map.put("id", id);
 		List<UmsMember> umsMembers = umsMemberMapper.selectByMap(map);
 
+
 		if (umsMembers.isEmpty()) {
 			//用户不存在
 			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_NO_EXISTS.getCode(),
@@ -138,5 +147,15 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 			umsMemberMapper.updateById(umsMemberDB);
 			return ResponseResult.success(umsMemberDB);
 		}
+	}
+
+	@Override
+	public ResponseToken generator(HttpServletResponse response) {
+		String accessToken = response.getHeader("accessToken");
+		String refreshToken = response.getHeader("refreshToken");
+		ResponseToken responseToken = new ResponseToken();
+		responseToken.setAccessToken(accessToken);
+		responseToken.setRefreshToken(refreshToken);
+		return responseToken;
 	}
 }

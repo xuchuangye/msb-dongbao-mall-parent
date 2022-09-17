@@ -34,13 +34,13 @@ public class GlobalExceptionHandler {
 	}
 
 	/**
-	 * 登录异常的处理
+	 * 自定义的登录异常处理
 	 *
 	 * @param e 异常
 	 * @return 统一异常处理
 	 */
 	@ExceptionHandler(TokenException.class)
 	public ResponseResult tokenException(Exception e) {
-		return ResponseResult.fail(StateCodeEnum.FAIL.getCode(), e.getMessage());
+		return ResponseResult.fail(StateCodeEnum.TOKEN_EXCEPTION.getCode(), e.getMessage());
 	}
 }

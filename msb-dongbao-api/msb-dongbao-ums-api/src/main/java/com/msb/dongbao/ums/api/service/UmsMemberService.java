@@ -1,9 +1,12 @@
 package com.msb.dongbao.ums.api.service;
 
 import com.msb.dongbao.common.base.response.ResponseResult;
+import com.msb.dongbao.common.base.response.ResponseToken;
 import com.msb.dongbao.ums.api.entity.UmsMember;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
+
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * <p>
@@ -23,4 +26,6 @@ public interface UmsMemberService {
 	public boolean selectUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 
 	public ResponseResult verify( String token);
+
+	public ResponseToken generator(HttpServletResponse response);
 }

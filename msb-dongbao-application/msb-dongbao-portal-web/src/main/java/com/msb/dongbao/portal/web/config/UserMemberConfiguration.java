@@ -23,6 +23,8 @@ public class UserMemberConfiguration implements WebMvcConfigurer {
 		List<String> patterns = new ArrayList<>();
 		patterns.add("/user-member/register");
 		patterns.add("/user-member/login");
+		patterns.add("/code/**");
+		patterns.add("/jcaptcha/**");
 
 		//添加拦截器
 		registry.addInterceptor(tokenCheckInterceptor())

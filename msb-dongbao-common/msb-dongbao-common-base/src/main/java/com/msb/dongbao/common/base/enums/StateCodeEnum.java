@@ -27,6 +27,16 @@ public enum StateCodeEnum {
 	FAIL(500, "请求失败"),
 
 	/**
+	 * token解析异常
+	 */
+	TOKEN_EXCEPTION(501, "token解析异常"),
+
+	/**
+	 * token为空
+	 */
+	TOKEN_EMPTY(502, "token为空"),
+
+	/**
 	 * 用户不存在
 	 */
 	UMSMEMBER_NO_EXISTS(1099, "用户不存在"),

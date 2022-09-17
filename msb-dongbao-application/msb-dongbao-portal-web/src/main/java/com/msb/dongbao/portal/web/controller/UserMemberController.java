@@ -2,6 +2,7 @@ package com.msb.dongbao.portal.web.controller;
 
 import com.msb.dongbao.common.base.annotation.TokenCheck;
 import com.msb.dongbao.common.base.response.ResponseResult;
+import com.msb.dongbao.common.base.response.ResponseToken;
 import com.msb.dongbao.ums.api.entity.UmsMember;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberLoginParamDTO;
 import com.msb.dongbao.ums.api.entity.dto.UmsMemberRegisterParamDTO;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 /**
@@ -43,5 +45,10 @@ public class UserMemberController {
 	@GetMapping("/test-verify")
 	public ResponseResult verify(@RequestParam("token") String token) {
 		return umsMemberService.verify(token);
+	}
+
+	@GetMapping("/generator")
+	public ResponseToken generator(HttpServletResponse response) {
+		return umsMemberService.generator(response);
 	}
 }
