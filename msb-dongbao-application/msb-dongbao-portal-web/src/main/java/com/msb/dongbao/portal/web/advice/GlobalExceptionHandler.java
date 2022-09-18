@@ -1,11 +1,13 @@
 package com.msb.dongbao.portal.web.advice;
 
+import com.baomidou.kaptcha.exception.KaptchaException;
+import com.baomidou.kaptcha.exception.KaptchaIncorrectException;
+import com.baomidou.kaptcha.exception.KaptchaNotFoundException;
+import com.baomidou.kaptcha.exception.KaptchaTimeoutException;
 import com.msb.dongbao.common.base.enums.StateCodeEnum;
 import com.msb.dongbao.common.base.exception.TokenException;
 import com.msb.dongbao.common.base.response.ResponseResult;
 import org.springframework.web.bind.annotation.*;
-
-import javax.security.auth.login.LoginException;
 
 /**
  * 全局异常处理类
@@ -30,17 +32,41 @@ public class GlobalExceptionHandler {
 	 */
 	@ExceptionHandler(ArithmeticException.class)
 	public ResponseResult arithmeticException() {
-		return ResponseResult.fail(301, "算术异常处理");
+		return ResponseResult.fail(StateCodeEnum.ARITHMETIC_EXCEPTION.getCode(), StateCodeEnum.ARITHMETIC_EXCEPTION.getMessage());
 	}
 
 	/**
 	 * 自定义的登录异常处理
 	 *
-	 * @param e 异常
 	 * @return 统一异常处理
 	 */
 	@ExceptionHandler(TokenException.class)
-	public ResponseResult tokenException(Exception e) {
-		return ResponseResult.fail(StateCodeEnum.TOKEN_EXCEPTION.getCode(), e.getMessage());
+	public ResponseResult tokenException() {
+		return ResponseResult.fail(StateCodeEnum.TOKEN_EXCEPTION.getCode(), StateCodeEnum.TOKEN_EXCEPTION.getMessage());
+	}
+
+	/**
+	 * KaptchaException
+	 *
+	 * @return
+	 */
+	@ExceptionHandler(KaptchaException.class)
+	public ResponseResult kaptchaException(KaptchaException e) {
+		//未找到kaptcha异常
+		if (e instanceof KaptchaNotFoundException) {
+			return ResponseResult.fail(StateCodeEnum.KAPTCHA_NOTFOUND_EXCEPTION.getCode(), StateCodeEnum.KAPTCHA_NOTFOUND_EXCEPTION.getMessage());
+		}
+		//kaptcha不正确异常
+		else if (e instanceof KaptchaIncorrectException) {
+			return ResponseResult.fail(StateCodeEnum.KAPTCHA_INCORRECT_EXCEPTION.getCode(), StateCodeEnum.KAPTCHA_INCORRECT_EXCEPTION.getMessage());
+		}
+		//kaptcha超时异常
+		else if (e instanceof KaptchaTimeoutException) {
+			return ResponseResult.fail(StateCodeEnum.KAPTCHA_TIMEOUT_EXCEPTION.getCode(), StateCodeEnum.KAPTCHA_INCORRECT_EXCEPTION.getMessage());
+		}
+		//kaptcha渲染异常
+		else {
+			return ResponseResult.fail(StateCodeEnum.KAPTCHA_RENDER_EXCEPTION.getCode(), StateCodeEnum.KAPTCHA_INCORRECT_EXCEPTION.getMessage());
+		}
 	}
 }

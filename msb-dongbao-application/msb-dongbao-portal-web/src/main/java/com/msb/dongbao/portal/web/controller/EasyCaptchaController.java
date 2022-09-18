@@ -7,6 +7,7 @@ import com.wf.captcha.ArithmeticCaptcha;
 import com.wf.captcha.ChineseCaptcha;
 import com.wf.captcha.SpecCaptcha;
 import com.wf.captcha.utils.CaptchaUtil;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,9 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * @author xcy
@@ -24,6 +28,7 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/easy-captcha")
 public class EasyCaptchaController {
+	private final String uuid = UUID.randomUUID().toString();
 
 	@GetMapping("/generator")
 	public void generatorBase64(HttpServletRequest request, HttpServletResponse response) {
@@ -67,14 +72,20 @@ public class EasyCaptchaController {
 	@GetMapping("/generator-redis")
 	public void generatorBase64Redis(HttpServletRequest request, HttpServletResponse response) {
 
-		SpecCaptcha specCaptcha = new SpecCaptcha(100, 50);
-		//获取验证码的内容
-		String text = specCaptcha.text();
-		//将验证码的内容存储到Redis
-		String sessionId = request.getSession().getId();
-		stringRedisTemplate.opsForValue().set(sessionId, text);
-
 		try {
+			SpecCaptcha specCaptcha = new SpecCaptcha(100, 50);
+			//获取验证码的内容
+			String text = specCaptcha.text();
+			//将验证码的内容存储到Redis
+			//String sessionId = request.getSession().getId();
+			//stringRedisTemplate.opsForValue().set(sessionId, uuid);
+
+			/*String base64 = specCaptcha.toBase64();
+			Map<String, String> map = new HashMap<>();
+			map.put("uuid", uuid);
+			map.put("base64", base64);*/
+			stringRedisTemplate.opsForValue().set(uuid, text);
+
 			CaptchaUtil.out(specCaptcha, request, response);
 		} catch (Exception e) {
 			System.out.println(e.getMessage());
@@ -84,8 +95,9 @@ public class EasyCaptchaController {
 
 	@GetMapping("/verify-redis")
 	public String verifyRedis(String verifyCode, HttpServletRequest request) {
-		String sessionId = request.getSession().getId();
-		String key = stringRedisTemplate.opsForValue().get(sessionId);
+		//String sessionId = request.getSession().getId();
+		String key = stringRedisTemplate.opsForValue().get(uuid);
+
 
 		//ignoreCase：忽略大小写
 		if (verifyCode.equals(key)) {
