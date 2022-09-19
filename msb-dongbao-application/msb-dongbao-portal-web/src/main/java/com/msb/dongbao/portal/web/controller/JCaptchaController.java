@@ -1,14 +1,11 @@
 package com.msb.dongbao.portal.web.controller;
 
-import com.msb.dongbao.common.util.code.ImageCode;
 import com.msb.dongbao.common.util.utils.JCaptchaUtils;
-import com.sun.image.codec.jpeg.JPEGCodec;
-import com.sun.image.codec.jpeg.JPEGImageDecoder;
-import com.sun.image.codec.jpeg.JPEGImageEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -29,7 +26,7 @@ public class JCaptchaController {
 	public void generatorBase64(HttpServletRequest request, HttpServletResponse response) {
 		//sessionId与验证码一一对应
 		String id = request.getSession().getId();
-		BufferedImage BufferedImage = JCaptchaUtils.getService().getImageChallengeForID(id);
+		BufferedImage bufferedImage = JCaptchaUtils.getService().getImageChallengeForID(id);
 		//将BufferedImage创建成图片类型的形式
 		//已经准备好了背景、字、字体，但是并没有画图片
 		//使用JCaptchaUtils的框架将图片渲染出来，所以需要创建图片编解码的工具
@@ -37,9 +34,7 @@ public class JCaptchaController {
 		try {
 			ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			//JPEG图像编码器
-			JPEGImageEncoder jpegEncoder = JPEGCodec.createJPEGEncoder(outputStream);
-
-			jpegEncoder.encode(BufferedImage);
+			ImageIO.write(bufferedImage, "", outputStream);
 			response.setHeader("Cache-Control", "no-store");
 			response.setContentType("image/jpeg");
 

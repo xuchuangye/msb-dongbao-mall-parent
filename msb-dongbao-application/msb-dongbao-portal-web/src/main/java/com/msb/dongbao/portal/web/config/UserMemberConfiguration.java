@@ -3,6 +3,7 @@ package com.msb.dongbao.portal.web.config;
 import com.msb.dongbao.portal.web.interceptor.TokenCheckInterceptor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -38,4 +39,5 @@ public class UserMemberConfiguration implements WebMvcConfigurer {
 	public TokenCheckInterceptor tokenCheckInterceptor() {
 		return new TokenCheckInterceptor();
 	}
+
 }

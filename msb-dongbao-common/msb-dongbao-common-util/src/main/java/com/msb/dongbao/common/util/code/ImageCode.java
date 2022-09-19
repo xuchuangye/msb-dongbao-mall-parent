@@ -1,14 +1,14 @@
 package com.msb.dongbao.common.util.code;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
+
 import lombok.Data;
-import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.Random;
 
 /**
@@ -16,7 +16,6 @@ import java.util.Random;
  * @date 2022/9/15 - 16:45
  */
 @Data
-@Slf4j
 public class ImageCode {
 	/**
 	 * 图片中的内容
@@ -130,16 +129,16 @@ public class ImageCode {
 		graphics.dispose();
 
 		ByteArrayInputStream inputStream = null;
-		ByteOutputStream outputStream = new ByteOutputStream();
+		ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 		try {
 			//赋值给 ByteArrayInputStream image
 			ImageOutputStream imageOutputStream = ImageIO.createImageOutputStream(outputStream);
 			ImageIO.write(image, "jpeg", imageOutputStream);
 
-			inputStream = new ByteArrayInputStream(outputStream.getBytes());
+			inputStream = new ByteArrayInputStream(outputStream.toByteArray());
 		} catch (Exception e) {
-			log.info("");
+			System.out.println(e.getMessage());
 		}
 
 		this.image = inputStream;

@@ -17,6 +17,8 @@ import javax.servlet.http.HttpServletResponse;
  * @since 2022-09-10
  */
 public interface UmsMemberService {
+	public ResponseResult getCaptcha(String phone);
+
 	public ResponseResult registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 
 	public ResponseResult loginUser(UmsMemberLoginParamDTO umsMemberLoginParamDTO);
@@ -25,7 +27,7 @@ public interface UmsMemberService {
 
 	public boolean selectUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO);
 
-	public ResponseResult verify( String token);
+	public ResponseResult verify(String token);
 
 	public ResponseToken generator(HttpServletResponse response);
 }

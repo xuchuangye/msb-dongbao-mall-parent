@@ -1,7 +1,5 @@
 package com.msb.dongbao.common.util.utils;
 
-import com.msb.dongbao.common.base.exception.TokenException;
-import com.msb.dongbao.common.base.response.ResponseToken;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 

@@ -25,6 +25,11 @@ public class UserMemberController {
 	@Autowired
 	private UmsMemberService umsMemberService;
 
+	@GetMapping("/captcha")
+	public ResponseResult getCaptcha(@RequestParam String phone) {
+		return umsMemberService.getCaptcha(phone);
+	}
+
 	@PostMapping("/register")
 	public ResponseResult registerUser(@RequestBody @Valid UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
 		//int a = 10 / 0;

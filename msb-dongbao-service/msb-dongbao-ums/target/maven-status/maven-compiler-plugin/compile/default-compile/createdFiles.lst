@@ -1,0 +1,6 @@
+com\msb\dongbao\ums\mapper\UmsMemberMapper.class
+com\msb\dongbao\ums\config\MyConfiguration.class
+com\msb\dongbao\ums\MsbDongbaoUmsApplication.class
+com\msb\dongbao\ums\controller\UmsMemberController.class
+com\msb\dongbao\ums\config\MyConfiguration$1.class
+com\msb\dongbao\ums\service\impl\UmsMemberServiceImpl.class

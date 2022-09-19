@@ -1,0 +1,13 @@
+com\msb\dongbao\portal\web\controller\EasyCaptchaController.class
+com\msb\dongbao\portal\web\MsbDongbaoPortalWebApplication.class
+com\msb\dongbao\portal\web\advice\GlobalExceptionHandler.class
+com\msb\dongbao\portal\web\kaptcha\MyKaptcha.class
+com\msb\dongbao\portal\web\interceptor\TokenCheckInterceptor.class
+com\msb\dongbao\portal\web\controller\UserMemberController.class
+com\msb\dongbao\portal\web\controller\JCaptchaController.class
+com\msb\dongbao\portal\web\config\UserMemberConfiguration.class
+com\msb\dongbao\portal\web\controller\HappyCaptchaController.class
+com\msb\dongbao\portal\web\controller\VerifyCodeController.class
+com\msb\dongbao\portal\web\controller\SliderController.class
+com\msb\dongbao\portal\web\advice\AdviceHandler.class
+com\msb\dongbao\portal\web\controller\KaptchaController.class

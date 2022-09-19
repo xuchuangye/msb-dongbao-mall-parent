@@ -36,4 +36,9 @@ public class UmsMemberRegisterParamDTO {
 	 * 昵称
 	 */
 	private String nickName;
+
+	/**
+	 * 验证码
+	 */
+	private String captcha;
 }

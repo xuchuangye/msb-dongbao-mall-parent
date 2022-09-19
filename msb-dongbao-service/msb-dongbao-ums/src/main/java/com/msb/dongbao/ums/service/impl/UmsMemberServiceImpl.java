@@ -1,5 +1,6 @@
 package com.msb.dongbao.ums.service.impl;
 
+import com.baomidou.kaptcha.Kaptcha;
 import com.msb.dongbao.common.base.enums.StateCodeEnum;
 import com.msb.dongbao.common.base.response.ResponseResult;
 import com.msb.dongbao.common.base.response.ResponseToken;
@@ -40,6 +41,15 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
+	@Autowired
+	private Kaptcha kaptcha;
+
+	@Override
+	public ResponseResult getCaptcha(String phone) {
+		String captcha = kaptcha.render();
+		return ResponseResult.success(captcha);
+	}
+
 	@Override
 	public ResponseResult registerUser(UmsMemberRegisterParamDTO umsMemberRegisterParamDTO) {
 		boolean result = selectUser(umsMemberRegisterParamDTO);
@@ -48,6 +58,8 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 			return ResponseResult.fail(StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getCode(),
 					StateCodeEnum.UMSMEMBER_ALREADY_EXISTS.getMessage());
 		}
+		//获取验证码
+		String captcha = umsMemberRegisterParamDTO.getCaptcha();
 		//获取密码值
 		String password = umsMemberRegisterParamDTO.getPassword();
 		//计算得到加密值
@@ -57,7 +69,7 @@ public class UmsMemberServiceImpl implements UmsMemberService {
 		UmsMember umsMember = new UmsMember();
 		BeanUtils.copyProperties(umsMemberRegisterParamDTO, umsMember);
 		umsMemberMapper.insert(umsMember);
-		return ResponseResult.success(umsMember);
+		return ResponseResult.success(umsMember, captcha);
 	}
 
 	@Override

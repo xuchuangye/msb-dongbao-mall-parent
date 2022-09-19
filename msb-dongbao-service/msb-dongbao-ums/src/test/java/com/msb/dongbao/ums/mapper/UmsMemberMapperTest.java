@@ -12,7 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 public class UmsMemberMapperTest {
 
-	@Autowired
+	/*@Autowired
 	private UmsMemberMapper umsMemberMapper;
 
 	@Test
@@ -23,6 +23,8 @@ public class UmsMemberMapperTest {
 		umsMember.setNote("note");
 		umsMember.setNickName("nick");
 		umsMember.setStatus(0);
+		umsMember.setUsername("root");
+		umsMember.setPassword("root");
 		umsMemberMapper.insert(umsMember);
 	}
 
@@ -33,5 +35,5 @@ public class UmsMemberMapperTest {
 		umsMember.setUsername("root");
 		umsMember.setPassword("root");
 		umsMemberMapper.updateById(umsMember);
-	}
+	}*/
 }

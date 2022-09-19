@@ -1,0 +1,5 @@
+com\msb\dongbao\ums\api\MsbDongbaoUmsApiApplication.class
+com\msb\dongbao\ums\api\entity\UmsMember.class
+com\msb\dongbao\ums\api\entity\dto\UmsMemberRegisterParamDTO.class
+com\msb\dongbao\ums\api\entity\dto\UmsMemberLoginParamDTO.class
+com\msb\dongbao\ums\api\service\UmsMemberService.class

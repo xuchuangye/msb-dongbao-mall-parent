@@ -1,0 +1,3 @@
+com\msb\dongbao\portal\web\test\TestMain.class
+com\msb\dongbao\portal\web\MsbDongbaoPortalWebTest.class
+com\msb\dongbao\portal\web\verifycode\TesseractTest.class
