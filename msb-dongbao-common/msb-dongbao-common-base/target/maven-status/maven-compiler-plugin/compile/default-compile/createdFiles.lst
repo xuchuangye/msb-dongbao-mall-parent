@@ -1,5 +1,6 @@
 com\msb\dongbao\common\base\entity\VerificationVO.class
 com\msb\dongbao\common\base\response\ResponseToken.class
+com\msb\dongbao\common\base\MsbDongbaoCommonBaseApplication.class
 com\msb\dongbao\common\base\enums\StateCodeEnum.class
 com\msb\dongbao\common\base\exception\TokenException.class
 com\msb\dongbao\common\base\annotation\TokenCheck.class

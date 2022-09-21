@@ -14,6 +14,7 @@
         <module name="msb-dongbao-dictionary-api" />
         <module name="msb-dongbao-pay" />
         <module name="msb-dongbao-cms" />
+        <module name="msb-dongbao-test-web" />
         <module name="msb-dongbao-job" />
         <module name="msb-dongbao-cart" />
         <module name="msb-dongbao-ums" />
@@ -25,6 +26,7 @@
         <module name="msb-dongbao-ums-api" />
         <module name="msb-dongbao-cart-api" />
         <module name="msb-dongbao-sms" />
+        <module name="msb-dongbao-test2-web" />
         <module name="msb-dongbao-cms-api" />
         <module name="msb-dongbao-pms" />
         <module name="msb-dongbao-common-base" />
@@ -52,6 +54,8 @@
       <module name="msb-dongbao-portal-web" options="-parameters" />
       <module name="msb-dongbao-sms" options="-parameters" />
       <module name="msb-dongbao-sms-api" options="-parameters" />
+      <module name="msb-dongbao-test-web" options="-parameters" />
+      <module name="msb-dongbao-test2-web" options="-parameters" />
       <module name="msb-dongbao-ums" options="-parameters" />
       <module name="msb-dongbao-ums-api" options="-parameters" />
     </option>

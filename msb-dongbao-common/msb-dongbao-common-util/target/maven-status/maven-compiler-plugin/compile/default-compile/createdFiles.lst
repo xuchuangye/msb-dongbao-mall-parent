@@ -1,6 +1,7 @@
 com\msb\dongbao\common\util\code\ImageCode.class
-com\msb\dongbao\common\util\utils\SliderUtils.class
 com\msb\dongbao\common\util\utils\JCaptchaUtils.class
 com\msb\dongbao\common\util\utils\JCaptchaUtils$InnerClass.class
-com\msb\dongbao\common\util\utils\JwtUtils.class
 com\msb\dongbao\common\util\utils\VerifyImageUtils.class
+com\msb\dongbao\common\util\MsbDongbaoCommonUtilApplication.class
+com\msb\dongbao\common\util\utils\SliderUtils.class
+com\msb\dongbao\common\util\utils\JwtUtils.class

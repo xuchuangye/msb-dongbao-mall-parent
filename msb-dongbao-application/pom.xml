@@ -19,7 +19,16 @@
         <module>msb-dongbao-manager-web</module>
         <!-- 商城门户网站 -->
         <module>msb-dongbao-portal-web</module>
+        <module>msb-dongbao-test-web</module>
+        <module>msb-dongbao-test2-web</module>
     </modules>
 
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
