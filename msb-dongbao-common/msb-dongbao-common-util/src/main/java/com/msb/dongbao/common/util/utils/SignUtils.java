@@ -1,9 +1,11 @@
 package com.msb.dongbao.common.util.utils;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
+import cn.hutool.core.convert.Convert;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
+import com.msb.dongbao.common.base.entity.SignDTO;
+
+import java.util.*;
 
 /**
  * 签名工具类
@@ -21,13 +23,13 @@ public class SignUtils {
 	 * @param map
 	 * @return
 	 */
-	public static String generatorSign(Map<String, Object> map) {
+	public static String generatorSign(Map<String, String> map) {
 		map.remove("sign");
 		//字典序
-		Map<String, Object> sortMap = returnSortedMap(map);
+		Map<String, String> sortMap = returnSortedMap(map);
 		//转成其他格式
 		StringBuilder stringBuilder = new StringBuilder();
-		for (Map.Entry<String, Object> entry : sortMap.entrySet()) {
+		for (Map.Entry<String, String> entry : sortMap.entrySet()) {
 			stringBuilder.append(entry.getKey()).append(",").append(entry.getValue()).append("#");
 		}
 		//拼接appSecret
@@ -49,8 +51,8 @@ public class SignUtils {
 	 * @param map 原始Map
 	 * @return sortedMap
 	 */
-	public static Map<String, Object> returnSortedMap(Map<String, Object> map) {
-		Map<String, Object> sortMap = new TreeMap<>(new MyMapComparator());
+	public static Map<String, String> returnSortedMap(Map<String, String> map) {
+		Map<String, String> sortMap = new TreeMap<>(new MyMapComparator());
 		if (!map.isEmpty()) {
 			sortMap.putAll(map);
 		}
@@ -58,23 +60,55 @@ public class SignUtils {
 	}
 
 	public static void main(String[] args) {
-		Map<String, Object> map = new HashMap<>();
+		Map<String, String> map = new HashMap<>();
 		/*map.put("ga", 1);
 		map.put("az", "张三");
 		map.put("zh", "张三");
 		System.out.println(map);*/
-		map.put("appId", 1);
+		map.put("appId", "1");
 		map.put("name", "张三");
 		//map.put("timestamp", 1663833376918L);
 
 		//long l = System.currentTimeMillis() - 20 * 1000;
 		//System.out.println(l);
 
-		Map<String, Object> sortedMap = returnSortedMap(map);
+		Map<String, String> sortedMap = returnSortedMap(map);
 		System.out.println(sortedMap);
 
 		String sign = generatorSign(sortedMap);
 		//8c3a3c1513768658e707f78eff3fec04
 		System.out.println(sign);
+	}
+
+	/**
+	 * 校验签名
+	 *
+	 * @param signDTO 生成签名的实体类
+	 * @return
+	 */
+	public static boolean checkSign(SignDTO signDTO) {
+		JSONObject object = JSONUtil.parseObj(signDTO);
+		//将请求参数的请求体中的实体类转换成Map
+		Map<String, String> map = Convert.toMap(String.class, String.class, object);
+		//对Map进行排序
+		String signClient = map.get("sign");
+		//sign不参与签名的生成
+		map.remove("sign");
+		Map<String, String> sortedMap = returnSortedMap(map);
+		//生成sign
+		String signServer = generatorSign(sortedMap);
+		//校验sign
+		return signServer.equals(signClient);
+	}
+
+	/**
+	 * @param map
+	 * @return
+	 */
+	public static boolean checkSign(SortedMap<String, String> map) {
+		String sign = map.get("sign");
+		map.remove("sign");
+		String signServer = SignUtils.generatorSign(map);
+		return signServer.equals(sign);
 	}
 }

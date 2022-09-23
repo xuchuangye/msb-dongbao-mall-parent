@@ -1,4 +1,4 @@
-package com.msb.dongbao.portal.web.controller;
+package com.msb.dongbao.portal.web.controller.captcha;
 
 import com.msb.dongbao.common.util.utils.JCaptchaUtils;
 import org.springframework.web.bind.annotation.GetMapping;

@@ -2,8 +2,6 @@ package com.msb.dongbao.portal.web.utls;
 
 
 import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.TypeReference;
-import com.alibaba.fastjson.parser.Feature;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
@@ -34,12 +32,16 @@ public class HttpParameterUtils {
 
 		SortedMap<String, String> allParams = new TreeMap<>();
 
-		for (Map.Entry<String, String> entry : urlParams.entrySet()) {
-			allParams.put(entry.getKey(), entry.getValue());
+		if (urlParams != null) {
+			for (Map.Entry<String, String> entry : urlParams.entrySet()) {
+				allParams.put(entry.getKey(), entry.getValue());
+			}
 		}
 
-		for (Map.Entry<String, String> entry : bodyParams.entrySet()) {
-			allParams.put(entry.getKey(), entry.getValue());
+		if (bodyParams != null) {
+			for (Map.Entry<String, String> entry : bodyParams.entrySet()) {
+				allParams.put(entry.getKey(), entry.getValue());
+			}
 		}
 		log.info("所有的参数：" + allParams);
 		return allParams;
@@ -53,6 +55,7 @@ public class HttpParameterUtils {
 	 */
 	private static Map<String, String> getBodyParams(HttpServletRequest request) {
 		StringBuilder stringBuilder = null;
+		Map map = null;
 		try {
 			//@RequestBody是通过流传递参数
 			BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(request.getInputStream()));
@@ -63,16 +66,15 @@ public class HttpParameterUtils {
 			while ((buff = bufferedReader.readLine()) != null) {
 				stringBuilder.append(buff);
 			}
+
+			//转换成Map
+			if (!StringUtils.isBlank(stringBuilder)) {
+				map = JSONObject.parseObject(stringBuilder.toString(), Map.class);
+			}
+			log.info("body的参数：" + map);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//转换成Map
-
-		Map map = null;
-		if (stringBuilder != null) {
-			map = JSONObject.parseObject(stringBuilder.toString(), Map.class);
-		}
-		log.info("body的参数：" + map);
 		return map;
 	}
 

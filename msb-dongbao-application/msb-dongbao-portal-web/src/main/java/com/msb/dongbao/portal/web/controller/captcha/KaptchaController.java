@@ -1,4 +1,4 @@
-package com.msb.dongbao.portal.web.controller;
+package com.msb.dongbao.portal.web.controller.captcha;
 
 import com.baomidou.kaptcha.GoogleKaptcha;
 import com.baomidou.kaptcha.Kaptcha;
