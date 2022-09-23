@@ -31,7 +31,8 @@ public class ApiSafeController {
 
 	@GetMapping("/verify-sign")
 	public ResponseResult verifySign(/*String appId, String name, Long timestamp,*/ String sign, HttpServletRequest request) {
-		Map<String, Object> map = new HashMap<>();
+		Object obj = request.getAttribute("map");
+		Map<String, Object> map = Convert.toMap(String.class, Object.class, obj);
 		/*map.put("addId", appId);
 		map.put("name", name);
 		map.put("timestamp", timestamp);*/
@@ -47,14 +48,14 @@ public class ApiSafeController {
 					.build();
 		}*/
 
-		Enumeration<String> parameterNames = request.getParameterNames();
+		/*Enumeration<String> parameterNames = request.getParameterNames();
 		while (parameterNames.hasMoreElements()) {
 			//获取参数名称
 			String parameterName = parameterNames.nextElement();
 			//获取参数值
 			String parameter = request.getParameter(parameterName);
 			map.put(parameterName, parameter);
-		}
+		}*/
 
 		//f1f6e217c9974f1f01111c48a0df8cf1
 		String signDB = SignUtils.generatorSign(map);
@@ -84,7 +85,7 @@ public class ApiSafeController {
 		String signServer = SignUtils.generatorSign(sortedMap);
 		//校验sign
 		String signClient = (String) sortedMap.get("sign");
-		if (signServer.equals(signServer)) {
+		if (signServer.equals(signClient)) {
 			return ResponseResult.builder()
 					.code(StateCodeEnum.SUCCESS.getCode())
 					.message("校验通过")
